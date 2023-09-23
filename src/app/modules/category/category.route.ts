@@ -14,4 +14,6 @@ router.post(
 router.get('/', CategoryController.getAllFromDB);
 router.get('/:id', CategoryController.getByIdFromDB);
 
+router.patch('/:id', auth(ENUM_USER_ROLE.ADMIN), CategoryController.updateById);
+
 export const CategoryRoutes = router;
