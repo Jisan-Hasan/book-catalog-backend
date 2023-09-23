@@ -16,6 +16,30 @@ const insertIntoDB = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getAllFromDB = catchAsync(async (req: Request, res: Response) => {
+  const result = await CategoryService.getAllFromDB();
+
+  sendResponse<Category[]>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Categories fetched successfully',
+    data: result,
+  });
+});
+
+const getByIdFromDB = catchAsync(async (req: Request, res: Response) => {
+  const result = await CategoryService.getByIdFromDB(req.params.id);
+
+  sendResponse<Category>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Category fetched successfully',
+    data: result,
+  });
+});
+
 export const CategoryController = {
   insertIntoDB,
+  getAllFromDB,
+  getByIdFromDB,
 };
