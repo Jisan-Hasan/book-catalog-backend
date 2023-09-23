@@ -16,4 +16,10 @@ router.get('/:id', CategoryController.getByIdFromDB);
 
 router.patch('/:id', auth(ENUM_USER_ROLE.ADMIN), CategoryController.updateById);
 
+router.delete(
+  '/:id',
+  auth(ENUM_USER_ROLE.ADMIN),
+  CategoryController.deleteById
+);
+
 export const CategoryRoutes = router;
