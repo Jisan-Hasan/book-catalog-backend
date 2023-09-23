@@ -26,7 +26,19 @@ const getByIdFromDB = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const updateByIdFromDB = catchAsync(async (req: Request, res: Response) => {
+  const result = await UserService.updateByIdFromDB(req.params.id, req.body);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Users updated successfully',
+    data: result,
+  });
+});
+
 export const UserController = {
   getAllFromDB,
   getByIdFromDB,
+  updateByIdFromDB,
 };
