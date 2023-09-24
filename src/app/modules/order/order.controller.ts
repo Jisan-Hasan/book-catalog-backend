@@ -5,8 +5,6 @@ import sendResponse from '../../../shared/sendResponse';
 import { OrderService } from './order.service';
 
 const insertIntoDB = catchAsync(async (req: Request, res: Response) => {
-  console.log(req.user);
-  console.log(req.body);
   const result = await OrderService.insertIntoDB(req.user?.userId, req.body);
 
   sendResponse(res, {
@@ -17,6 +15,18 @@ const insertIntoDB = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getAllOrders = catchAsync(async (req: Request, res: Response) => {
+  const result = await OrderService.getAllOrders(req.user);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Orders retrieved successfully',
+    data: result,
+  });
+});
+
 export const OrderController = {
   insertIntoDB,
+  getAllOrders,
 };
