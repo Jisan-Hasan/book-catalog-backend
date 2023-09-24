@@ -47,7 +47,6 @@ model Book {
   category   Category @relation(fields: [categoryId], references: [id])
 
   reviewAndRatings ReviewAndRating[]
-  orderedBooks     OrderedBook[]
 
   @@map("books")
 }
@@ -75,23 +74,9 @@ model Order {
   status    OrderStatus @default(pending)
   createdAt DateTime    @default(now())
 
-  orderedBooks OrderedBook[]
+  orderedBooks Json
 
   @@map("orders")
-}
-
-model OrderedBook {
-  id String @id @default(uuid())
-
-  orderId String
-  order   Order  @relation(fields: [orderId], references: [id])
-
-  bookId String
-  book   Book   @relation(fields: [bookId], references: [id])
-
-  quantity Int
-
-  @@map("ordered_books")
 }
 
 enum Role {
