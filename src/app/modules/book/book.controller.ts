@@ -1,8 +1,14 @@
 import { Book } from '@prisma/client';
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
+import { paginationFields } from '../../../constants/pagination';
 import catchAsync from '../../../shared/catchAsync';
+import pick from '../../../shared/pick';
 import sendResponse from '../../../shared/sendResponse';
+import {
+  bookFilterableFields,
+  bookPriceRangeFilterFields,
+} from './book.constant';
 import { BookService } from './book.service';
 
 const insertIntoDB = catchAsync(async (req: Request, res: Response) => {
@@ -16,6 +22,23 @@ const insertIntoDB = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getAllFromDB = catchAsync(async (req: Request, res: Response) => {
+  const filters = pick(req.query, bookFilterableFields);
+  const options = pick(req.query, paginationFields);
+  const priceRange = pick(req.query, bookPriceRangeFilterFields);
+
+  const result = await BookService.getAllFromDB(filters, options, priceRange);
+
+  sendResponse<Book[]>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Books fetched successfully',
+    meta: result.meta,
+    data: result.data,
+  });
+});
+
 export const BookController = {
   insertIntoDB,
+  getAllFromDB,
 };
