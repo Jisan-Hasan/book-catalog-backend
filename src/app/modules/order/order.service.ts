@@ -36,7 +36,47 @@ const getAllOrders = async (user: JwtPayload | null): Promise<Order[]> => {
   throw new ApiError(httpStatus.UNAUTHORIZED, 'You are not authorized');
 };
 
+const getOrderById = async (
+  orderId: string,
+  user: JwtPayload | null
+): Promise<Order | null> => {
+  if (!user) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'You are not authorized');
+  }
+  //   check if user is admin
+  if (user.role === Role.admin) {
+    const result = await prisma.order.findUnique({
+      where: {
+        id: orderId,
+      },
+    });
+
+    return result;
+  }
+
+  //   check if user is customer
+  if (user.role === Role.customer) {
+    const result = await prisma.order.findUnique({
+      where: {
+        id: orderId,
+      },
+    });
+
+    if (result?.userId !== user.userId) {
+      throw new ApiError(
+        httpStatus.FORBIDDEN,
+        'You are forbidden for this order'
+      );
+    }
+
+    return result;
+  }
+
+  throw new ApiError(httpStatus.UNAUTHORIZED, 'You are not authorized');
+};
+
 export const OrderService = {
   insertIntoDB,
   getAllOrders,
+  getOrderById,
 };

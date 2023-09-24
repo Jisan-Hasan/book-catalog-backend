@@ -26,7 +26,19 @@ const getAllOrders = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getOrderById = catchAsync(async (req: Request, res: Response) => {
+  const result = await OrderService.getOrderById(req.params.orderId, req.user);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Order fetched successfully',
+    data: result,
+  });
+});
+
 export const OrderController = {
   insertIntoDB,
   getAllOrders,
+  getOrderById,
 };
