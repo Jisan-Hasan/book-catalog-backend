@@ -159,9 +159,21 @@ const getBookById = async (id: string): Promise<Book | null> => {
   return result;
 };
 
+const updateById = async (id: string, payload: Book): Promise<Book | null> => {
+  const result = await prisma.book.update({
+    where: {
+      id: id,
+    },
+    data: payload,
+  });
+
+  return result;
+};
+
 export const BookService = {
   insertIntoDB,
   getAllFromDB,
   getBooksByCategoryId,
   getBookById,
+  updateById,
 };
