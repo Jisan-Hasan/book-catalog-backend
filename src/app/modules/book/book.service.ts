@@ -170,10 +170,21 @@ const updateById = async (id: string, payload: Book): Promise<Book | null> => {
   return result;
 };
 
+const deleteById = async (id: string): Promise<Book | null> => {
+  const result = await prisma.book.delete({
+    where: {
+      id: id,
+    },
+  });
+
+  return result;
+};
+
 export const BookService = {
   insertIntoDB,
   getAllFromDB,
   getBooksByCategoryId,
   getBookById,
   updateById,
+  deleteById,
 };

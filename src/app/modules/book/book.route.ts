@@ -17,4 +17,6 @@ router.get('/:id', BookController.getBookById);
 
 router.patch('/:id', auth(ENUM_USER_ROLE.ADMIN), BookController.updateById);
 
+router.delete('/:id', auth(ENUM_USER_ROLE.ADMIN), BookController.deleteById);
+
 export const BookRoutes = router;
